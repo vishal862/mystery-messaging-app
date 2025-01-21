@@ -1,11 +1,11 @@
-# Created by https://www.toptal.com/developers/gitignore/api/nextjs
-# Edit at https://www.toptal.com/developers/gitignore?templates=nextjs
 
 ### NextJS ###
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+=======
+
 
 # testing
 /coverage
@@ -27,9 +27,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+<<<<<<< HEAD
 # local env files
 .env*.local
 .env
+=======
+# env files (can opt-in for committing if needed)
+.env*
+>>>>>>> master
 
 # vercel
 .vercel
@@ -37,5 +42,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+<<<<<<< HEAD
 
 # End of https://www.toptal.com/developers/gitignore/api/nextjs
+=======
+>>>>>>> master
