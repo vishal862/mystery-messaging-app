@@ -1,4 +1,4 @@
-import { sendEmailVerification } from "@/helpers/sendEmailVerification";
+import {sendOtpToUser} from "../../../helpers/sendOtp"
 import dbConnect from "@/lib/dbConnection";
 import UserModel from "@/model/User";
 import bcryptjs from "bcryptjs";
@@ -6,7 +6,7 @@ import bcryptjs from "bcryptjs";
 export async function POST(request: Request) {
   await dbConnect();
   try {
-    const { username, email, password } = await request.json();
+    const { username,email,phoneNumber,password } = await request.json();
 
     //1. If the user is verified then we can't allow other users to have the same username
     const verifiedExistingUserWithUsername = await UserModel.findOne({
@@ -26,23 +26,23 @@ export async function POST(request: Request) {
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const existingUserWithEmail = await UserModel.findOne({ email });
+    const existingUserWithPhoneNumber = await UserModel.findOne({ phoneNumber });
 
-    if (existingUserWithEmail) {
-      if (existingUserWithEmail.isVerified) {
+    if (existingUserWithPhoneNumber) {
+      if (existingUserWithPhoneNumber.isVerified) {
         return Response.json(
           {
             success: false,
-            message: "this email already exists, please try with another email",
+            message: "this number already exists, please try with another number",
           },
           { status: 500 }
         );
       } else {
         const hashedPassword = bcryptjs.hashSync(password, 16);
-        existingUserWithEmail.password = hashedPassword;
-        existingUserWithEmail.verifyCode = otp;
-        existingUserWithEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
-        await existingUserWithEmail.save();
+        existingUserWithPhoneNumber.password = hashedPassword;
+        existingUserWithPhoneNumber.verifyCode = otp;
+        existingUserWithPhoneNumber.verifyCodeExpiry = new Date(Date.now() + 3600000);
+        await existingUserWithPhoneNumber.save();
       }
     } else {
       const hashedPassword = bcryptjs.hashSync(password, 16);
@@ -53,6 +53,7 @@ export async function POST(request: Request) {
       await UserModel.create({
         username,
         email,
+        phoneNumber,
         password: hashedPassword,
         verifyCode: otp,
         verifyCodeExpiry: expiryDate,
@@ -63,13 +64,13 @@ export async function POST(request: Request) {
     }
 
     //send verification email to user
-    const emailResponse = await sendEmailVerification(username, email, otp);
+    const phoneNumberResponse = await sendOtpToUser(phoneNumber, otp);
 
-    if (!emailResponse.success) {
+    if (!phoneNumberResponse.success) {
       return Response.json(
         {
           success: false,
-          message: emailResponse.message,
+          message: phoneNumberResponse.message,
         },
         { status: 500 }
       );

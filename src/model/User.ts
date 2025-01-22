@@ -20,6 +20,7 @@ const messageSchema = new Schema<IMessage>({
 export interface IUser extends Document{
     username : string,
     email : string,
+    phoneNumber : string
     password : string,
     verifyCode : string
     verifyCodeExpiry : Date,
@@ -40,6 +41,11 @@ const userSchema = new Schema<IUser>({
         required : [true, "email is required"],
         unique : true,
         match: [/.+\@.+\..+/, 'Please use a valid email address'],
+    },
+    phoneNumber : {
+        type : String,
+        required : [true, "Phone Number is required"],
+        match: [/^(?:\+91|91)?[789]\d{9}$/, 'Invalid phone number format'],
     },
     password : {
         type : String,
