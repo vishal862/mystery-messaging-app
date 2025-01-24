@@ -57,7 +57,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         success: false,
-        message: "error while verifying ot",
+        message: "error while verifying otp",
       },
       { status: 500 }
     );

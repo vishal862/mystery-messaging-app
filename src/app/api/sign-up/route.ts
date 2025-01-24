@@ -79,7 +79,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         success: true,
-        message: "User registered successfully, please verify your email",
+        message: "User registered successfully, please verify your number",
       },
       { status: 201 }
     );
