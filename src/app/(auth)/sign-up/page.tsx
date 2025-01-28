@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { useDebounceValue, useDebounceCallback } from "usehooks-ts";
+import {useDebounceCallback } from "usehooks-ts";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { signUpSchema } from "@/schemas/signUpSchema";
@@ -75,7 +75,6 @@ export default function page() {
 
     try {
       const response = await axios.post<ApiResponse>(`/api/sign-up`, data);
-      console.log(response);
       
       toast({
         title: "Success",
@@ -84,7 +83,7 @@ export default function page() {
       router.replace(`/verify/${username}`);
       setIsSubmitting(false);
     } catch (error) {
-      // console.error("error in user sign up", error);
+      console.error("error in user sign up", error);
       const axiosError = error as AxiosError<ApiResponse>;
       let errorMessage = axiosError.response?.data.message;
       toast({
