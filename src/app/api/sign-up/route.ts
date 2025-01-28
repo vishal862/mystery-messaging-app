@@ -7,7 +7,11 @@ export async function POST(request: Request) {
   await dbConnect();
   try {
     const { username,email,phoneNumber,password } = await request.json();
-
+    console.log(username);
+    console.log(email);
+    console.log(phoneNumber);
+    console.log(password);
+    
     //1. If the user is verified then we can't allow other users to have the same username
     const verifiedExistingUserWithUsername = await UserModel.findOne({
       username,
@@ -26,7 +30,7 @@ export async function POST(request: Request) {
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const existingUserWithPhoneNumber = await UserModel.findOne({ phoneNumber });
+    const existingUserWithPhoneNumber = await UserModel.findOne({ phoneNumber });    
 
     if (existingUserWithPhoneNumber) {
       if (existingUserWithPhoneNumber.isVerified) {
@@ -50,7 +54,7 @@ export async function POST(request: Request) {
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1);
 
-      await UserModel.create({
+      const user = new UserModel({
         username,
         email,
         phoneNumber,
@@ -61,9 +65,14 @@ export async function POST(request: Request) {
         isAcceptingMessages: true,
         message: [],
       });
+
+      await user.save();
+      console.log(user);
     }
 
-    //send verification email to user
+    
+
+    //send verification otp to user
     const phoneNumberResponse = await sendOtpToUser(phoneNumber, otp);
 
     if (!phoneNumberResponse.success) {
