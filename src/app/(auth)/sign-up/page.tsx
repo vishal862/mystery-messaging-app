@@ -105,7 +105,7 @@ export default function page() {
           <p className="mb-4">Sign up to start your anonymous adventure</p>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
               name="username"
