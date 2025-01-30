@@ -68,10 +68,12 @@ export async function GET(request: Request) {
         { status: 404 }
       );
     }
+    console.log(user)
+    
 
     return Response.json(
       {
-        success: false,
+        success: true,
         message: user[0].messages,
       },
       { status: 200 }

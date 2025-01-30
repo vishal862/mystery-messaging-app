@@ -29,6 +29,8 @@ export default function page() {
       password: "",
     },
   });
+  console.log(form);
+  
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     const result = await signIn("credentials", {
