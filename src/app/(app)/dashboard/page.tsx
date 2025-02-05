@@ -67,7 +67,8 @@ export default function page() {
       try {
         const response = await axios.get<ApiResponse>("/api/get-messages");
         console.log(response);
-        setMessages(response.data.message || []);
+        const messagesArray = Array.isArray(response.data.message) ? response.data.message : [];
+        setMessages(messagesArray);
         if (refresh) {
           toast({
             title: "Refreshed Messages",

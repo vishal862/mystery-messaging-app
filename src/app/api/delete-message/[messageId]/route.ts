@@ -14,7 +14,7 @@ export async function DELETE(req: Request, { params }: { params: { messageId: st
             success : false,
             message : "Not authorized"
         },
-        {status : 500})
+        {status : 401})
     }
 
     const mesgId = params.messageId;
@@ -37,7 +37,7 @@ export async function DELETE(req: Request, { params }: { params: { messageId: st
             success : true,
             message : "Message deleted"
         },
-        {status : 500})
+        {status : 200})
     } catch (error) {
         console.log(error);
         return Response.json({
