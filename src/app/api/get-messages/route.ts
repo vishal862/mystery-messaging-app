@@ -4,7 +4,7 @@ import UserModel from "@/model/User";
 import { authOptions } from "../auth/[...nextauth]/options";
 import mongoose from "mongoose";
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   await dbConnect();
   const session = await getServerSession(authOptions);
 
@@ -81,6 +81,8 @@ export async function GET(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.log("error while getting messages",error);
+    
     return Response.json(
       {
         success: false,

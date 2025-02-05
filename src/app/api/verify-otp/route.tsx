@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       );
     }
   } catch (error) {
-    console.error("error while verifying otp");
+    console.error("error while verifying otp",error);
     return Response.json(
       {
         success: false,
