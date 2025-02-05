@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { signInSchema } from "@/schemas/signInSchema";
+import { signInSchema } from "../../../schemas/signInSchema";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
 
