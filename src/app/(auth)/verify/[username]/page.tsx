@@ -3,7 +3,7 @@ import React from "react";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useParams, useRouter } from "next/navigation";
-import { verifySchema } from "../../../schemas/verifySchema";
+import { verifySchema } from "../../../../schemas/verifySchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
