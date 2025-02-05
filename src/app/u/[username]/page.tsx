@@ -14,7 +14,7 @@ function Page() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post<ApiResponse>("/api/send-messages", {
+      await axios.post<ApiResponse>("/api/send-messages", {
         username: username,
         content: userMessage,
       });
@@ -26,7 +26,7 @@ function Page() {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to send the message.",
+        description: "This user can not accept messages.",
         variant: "destructive",
       });
       console.log(error);
@@ -40,7 +40,7 @@ function Page() {
           Public Profile: <span className="text-blue-400">{username}</span>
         </h1>
         <Input
-          className="w-full p-2 text-black rounded-md mb-4"
+          className="w-full p-2 text-white rounded-md mb-4"
           onChange={(e) => setUserMessage(e.target.value)}
           value={userMessage}
           placeholder="Enter your message..."
