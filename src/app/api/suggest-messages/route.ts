@@ -7,18 +7,17 @@ export async function POST(req: Request) {
     const prompt =
       "Create a list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. These questions are for an anonymous social messaging platform, like Qooh.me, and should be suitable for a diverse audience. Avoid personal or sensitive topics, focusing instead on universal themes that encourage friendly interaction. For example, your output should be structured like this: 'What’s a hobby you’ve recently started?||If you could have dinner with any historical figure, who would it be?||What’s a simple thing that makes you happy?'. Ensure the questions are intriguing, foster curiosity, and contribute to a positive and welcoming conversational environment.";
 
-    // API endpoint for Google's LLM
+    // Hugging Face API endpoint for GPT-2 or GPT-Neo
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText",
+      "https://api-inference.huggingface.co/models/gpt2", // You can change to another model like gpt-neo
       {
         method: "POST",
         headers: {
+          "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.GOOGLE_API_KEY}`,
         },
         body: JSON.stringify({
-          prompt: { text: prompt },
-          maxOutputTokens: 400,
+          inputs: prompt,
         }),
       }
     );
@@ -31,17 +30,17 @@ export async function POST(req: Request) {
         {
           success: false,
           errorData,
-          message: "error while llm response",
+          message: "Error while getting response from Hugging Face model",
         },
         { status: 400 }
       );
     }
 
     const data = await response.json();
-    const resultText = data.candidates?.[0]?.output || "No response generated";
-
-    console.log(resultText);
+    const resultText = data[0]?.generated_text || "No response generated";
+    console.log("*******************************88");
     
+    console.log(resultText);
 
     return NextResponse.json({ result: resultText });
   } catch (error) {

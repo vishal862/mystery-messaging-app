@@ -8,19 +8,19 @@ export async function GET(request: Request) {
   await dbConnect();
   const session = await getServerSession(authOptions);
 
-  const user: User = session?.user;
+  const _user: User = session?.user;
 
-  if (!session || !session?.user) {
+  if (!session || !_user) {
     return Response.json(
       {
         success: false,
         message: "Not authorized",
       },
-      { status: 500 }
+      { status: 401 }
     );
   }
 
-  const userId = new mongoose.Types.ObjectId(user._id);
+  const userId = new mongoose.Types.ObjectId(_user._id);
 
   try {
     // This aggregation pipeline is designed to efficiently fetch messages for a user
@@ -53,13 +53,15 @@ export async function GET(request: Request) {
     //   optimize query performance.
 
     const user = await UserModel.aggregate([
-      { $match: { id: userId } },
-      { $unwind: "$messages" },
-      { $sort: { "messages.createdAt": -1 } },
-      { $group: { _id: "$id", messages: { $push: "$messages" } } },
-    ]);
+      { $match: { _id: userId } },
+      { $unwind: "$message" },
+      { $sort: { "message.createdAt": -1 } },
+      { $group: { _id: "$_id", message: { $push: "$message" } } },
+    ]).exec();
+    console.log(user);
+    
 
-    if (!user || user.length == 0) {
+    if (!user || user.length === 0) {
       return Response.json(
         {
           success: false,
@@ -74,7 +76,7 @@ export async function GET(request: Request) {
     return Response.json(
       {
         success: true,
-        message: user[0].messages,
+        message: user[0].message,
       },
       { status: 200 }
     );
