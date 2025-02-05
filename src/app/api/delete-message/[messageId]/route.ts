@@ -25,7 +25,7 @@ export async function DELETE(_req: Request, { params }: { params: { messageId: s
             {$pull : {message : {_id : mesgId}}}
         )
 
-        if(updatedUser.modifiedCount == 0){
+        if(updatedUser.modifiedCount === 0){
             return Response.json({
                 success : false,
                 message : "Message not found or already deleted"
